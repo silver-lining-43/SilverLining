@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SilverLining Authentication</title>
+    <link rel="icon" type="image/png" href="assets/images/logo_image.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/theme.css">
+</head>
+<body>
+    <div class="lava-lamp" id="lavaLamp">
+        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    </div>
+
+    <!-- Live Update Banner Notification -->
+    <div class="update-banner" id="updateBanner">
+        <div>
+            <h4 style="color: #00ffff; margin-bottom: 5px;"><i class="fa-solid fa-arrow-up-right-dots"></i> Update Available!</h4>
+            <p style="font-size: 0.9rem; color: var(--text-main);">Version <span id="newVersionText" style="font-weight:bold; color:#00ffff;"></span> is now available.</p>
+        </div>
+        <button id="updateDownloadBtn" style="border-color: #00ffff; color: #00ffff; white-space: nowrap;">Download</button>
+        <button id="closeUpdateBtn" class="icon-btn" style="color: var(--text-muted);"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- App Version Display -->
+    <div class="app-version" id="appVersionDisplay" title="Click to understand version numbers">Loading...</div>
+
+    <!-- Version Info Guide Modal -->
+    <div id="versionInfoModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content" style="max-width: 450px; text-align: center;">
+            <h2 class="title" style="margin-bottom: 15px;">How to read App Versions</h2>
+            <h3 style="color: var(--accent); font-family: monospace; font-size: 2.5rem; margin-bottom: 20px; letter-spacing: 5px;">1.2.3</h3>
+            
+            <div style="text-align: left; background: var(--bg-main); padding: 20px; border-radius: 8px; border: 1px solid var(--accent); margin-bottom: 25px;">
+                <p style="margin-bottom: 15px; color: var(--text-main); line-height: 1.5;">
+                    <strong style="color: var(--accent); font-size: 1.2rem;">[1] Major Update:</strong><br>
+                    A massive overhaul. This completely undoes, recreates, or introduces massive new mechanics to the system.
+                </p>
+                <p style="margin-bottom: 15px; color: var(--text-main); line-height: 1.5;">
+                    <strong style="color: var(--accent); font-size: 1.2rem;">[2] Minor Update:</strong><br>
+                    A standard update. This adds new features, removes things, or changes parts of the layout.
+                </p>
+                <p style="color: var(--text-main); line-height: 1.5;">
+                    <strong style="color: var(--accent); font-size: 1.2rem;">[3] Patch Fix:</strong><br>
+                    A background update. This squashes small bugs, fixes typos, or patches small issues in the app.
+                </p>
+            </div>
+            <button id="closeVersionModalBtn">I Understand</button>
+        </div>
+    </div>
+
+    <!-- Main Authentication Container -->
+    <div class="auth-container">
+        <div class="logo-container">
+            <img src="assets/images/logo_image.png" alt="SilverLining Logo" id="logo" onerror="this.style.display='none'">
+            <h1 class="title">SilverLining</h1>
+            <p class="dev-subtitle">Developed by silver.lining.43</p>
+        </div>
+
+        <div class="input-group">
+            <label for="licenseKey">Enter key:</label>
+            <input type="text" id="licenseKey" placeholder="[_________ENTER_KEY_________]" autocomplete="off">
+        </div>
+
+        <div class="auth-buttons" id="authButtonContainer">
+            <button id="submitKeyBtn">Authenticate</button>
+            <button id="firstKeyBtn" class="secondary-btn" style="display: none;">Get my first key</button>
+            <button id="freezeKeyBtn" class="secondary-btn" style="display: none;">Freeze My Key</button>
+            <button id="unfreezeKeyBtn" class="secondary-btn" style="display: none;">Fire up my key</button>
+        </div>
+        
+        <p id="statusMessage"></p>
+    </div>
+
+    <!-- Trust Upgrade Modal -->
+    <div id="upgradeModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <h2 class="title" style="margin-bottom: 20px;">Hey!</h2>
+            <p style="margin-bottom: 15px; line-height: 1.5; color: var(--text-main);">
+                Thank you for using SilverLining! But sadly, your <span id="expiredTierText" style="color:var(--accent);">30 minute</span> testing key is up and now disabled. Want to play more? Don't worry! SilverLining is a system based on getting keys based off of trust, not money.
+            </p>
+            <p style="margin-bottom: 25px; line-height: 1.5; color: var(--text-main);">
+                Enter a username and we will give you an <span id="nextTierText" style="color:var(--accent);">8 hour</span> key! And after that key is expired, a 16 hour one. And after that? 48 hours! You will only lose key privilege only if you break a rule.
+            </p>
+            <div class="input-group">
+                <label style="font-size: 0.8rem; line-height: 1.4;">My username: [must not be racist, sexist, or queerphobic. Doing so will result in an instant HWID permanent ban!]</label>
+                <input type="text" id="usernameInput" placeholder="Enter safe username...">
+            </div>
+            <button id="redeemUpgradeBtn" disabled>Redeem my key</button>
+            <p id="upgradeStatusMsg" class="grid-message" style="padding: 10px 0 0 0;"></p>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <div class="dashboard-wrapper" id="dashboardWrapper">
+        <nav class="sidebar expanded" id="sidebar">
+            <div class="sidebar-top">
+                <button id="toggleSidebarBtn" class="icon-btn"><i class="fa-solid fa-bars"></i></button>
+                <img src="assets/images/logo_image.png" alt="" class="sidebar-logo-img" onerror="this.style.display='none'">
+                <span class="sidebar-logo-text">SilverLining</span>
+            </div>
+
+            <ul class="nav-links">
+                <li class="nav-item active" data-target="gamesView">
+                    <span class="nav-icon"><i class="fa-solid fa-gamepad"></i></span>
+                    <span class="nav-text">Library</span>
+                </li>
+                <li class="nav-item" data-target="proxyView">
+                    <span class="nav-icon"><i class="fa-solid fa-globe"></i></span>
+                    <span class="nav-text">Web Unblocker</span>
+                </li>
+                <li class="nav-item" data-target="themesView">
+                    <span class="nav-icon"><i class="fa-solid fa-palette"></i></span>
+                    <span class="nav-text">Themes</span>
+                </li>
+                <li class="nav-item" data-target="stealthView">
+                    <span class="nav-icon"><i class="fa-solid fa-user-shield"></i></span>
+                    <span class="nav-text">Stealth Config</span>
+                </li>
+                <li class="nav-item" data-target="accountView">
+                    <span class="nav-icon"><i class="fa-solid fa-key"></i></span>
+                    <span class="nav-text">Account Details</span>
+                </li>
+            </ul>
+
+            <div class="sidebar-bottom">
+                <li class="nav-item logout" id="logoutBtn">
+                    <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+                    <span class="nav-text">Log Out</span>
+                </li>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h2 id="viewTitle">Library</h2>
+            </header>
+
+            <div class="view-section active" id="gamesView">
+                <div class="games-grid" id="gamesGrid"></div>
+            </div>
+
+            <div class="view-section" id="proxyView">
+                <div class="custom-theme-creator" style="max-width: 600px; margin: 0 auto; text-align: center;">
+                    <i class="fa-solid fa-globe" style="font-size: 3rem; color: var(--accent); margin-bottom: 20px;"></i>
+                    <h3 style="margin-bottom: 20px; color: var(--text-main);">Direct Web Unblocker</h3>
+                    <div class="input-group">
+                        <input type="text" id="proxyInputUrl" placeholder="example.com or https://example.com" style="width: 100%;">
+                    </div>
+                    <button id="launchProxyBtn">Launch in Stealth</button>
+                </div>
+            </div>
+
+            <div class="view-section" id="themesView">
+                <div class="themes-container">
+                    <div class="theme-category">
+                        <h3>Preset Themes</h3>
+                        <div class="themes-grid" id="presetThemesGrid"></div>
+                    </div>
+                    <div class="theme-category">
+                        <h3>Neon Themes</h3>
+                        <div class="themes-grid" id="neonThemesGrid"></div>
+                    </div>
+                    <div class="theme-category">
+                        <h3>Create Custom Theme</h3>
+                        <div class="custom-theme-creator">
+                            <div class="color-picker-group"><label>Background:</label><input type="color" id="customBg" value="#1a1a1a"></div>
+                            <div class="color-picker-group"><label>Card:</label><input type="color" id="customCard" value="#2a2a2a"></div>
+                            <div class="color-picker-group"><label>Accent:</label><input type="color" id="customAccent" value="#c0c0c0"></div>
+                            <div class="color-picker-group"><label>Neon Glow:</label><input type="checkbox" id="customNeon"></div>
+                            <button id="applyCustomThemeBtn" class="theme-btn">Apply Custom Theme</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view-section" id="stealthView">
+                <div class="custom-theme-creator" style="max-width: 500px; margin: 0 auto;">
+                    <h3 style="margin-bottom: 20px; color: var(--text-main);"><i class="fa-solid fa-mask"></i> Cloaking Configuration</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">These settings change how your games and proxy tabs appear in the browser history and tab bar.</p>
+                    <div class="input-group">
+                        <label>Fake Tab Title:</label>
+                        <input type="text" id="stealthTitleInput" value="Classes">
+                    </div>
+                    <div class="input-group">
+                        <label>Fake Favicon (Icon):</label>
+                        <select id="stealthIconSelect" class="custom-select">
+                            <option value="assets/google.png">Google</option>
+                            <option value="assets/google_classroom.png">Google Classroom</option>
+                            <option value="assets/mathxl.png">MathXL</option>
+                            <option value="assets/desmos.png">Desmos Calculator</option>
+                        </select>
+                    </div>
+                    <button id="saveStealthBtn">Save Settings</button>
+                    <p id="stealthStatusMsg" class="grid-message" style="padding: 10px 0 0 0;"></p>
+                </div>
+            </div>
+
+            <div class="view-section" id="accountView">
+                <div class="theme-card" style="text-align: left; max-width: 450px; margin: 0 auto; cursor: default;">
+                    <h3 style="color: var(--accent); margin-bottom: 20px; border-bottom: 1px solid var(--glow); padding-bottom: 10px;">
+                        <i class="fa-solid fa-id-card"></i> License Information
+                    </h3>
+                    <p style="margin-bottom: 10px; font-size: 1.1rem; color: var(--text-main); display: flex; align-items: center;">
+                        <strong>Key:</strong> 
+                        <span id="accKey" style="color: var(--text-muted); font-family: monospace; margin-left: 10px;">Loading...</span>
+                        <button id="toggleKeyVisBtn" class="secondary-btn" style="font-size: 0.7rem; padding: 4px 8px; margin-left: auto; width: auto; display: inline-block;">Show Full Key</button>
+                    </p>
+                    <p style="margin-bottom: 10px; font-size: 1.1rem; color: var(--text-main);"><strong>Status:</strong> <span id="accStatus" style="color: #4dff4d;">ACTIVE</span></p>
+                    <p style="margin-bottom: 10px; font-size: 1.1rem; color: var(--text-main);"><strong>Tier:</strong> <span id="accType">Loading...</span></p>
+                    <p style="font-size: 1.1rem; color: var(--text-main);"><strong>Time Remaining:</strong> <span id="accTime" style="color: var(--accent);">Loading...</span></p>
+                    
+                    <div id="keyHistoryContainer" style="margin-top: 25px; border-top: 1px solid var(--glow); padding-top: 15px;">
+                        <h4 style="color: var(--text-main); margin-bottom: 15px; font-size: 1rem;"><i class="fa-solid fa-clock-rotate-left"></i> Key History</h4>
+                        <div id="keyHistoryList" style="max-height: 150px; overflow-y: auto; font-size: 0.85rem; color: var(--text-muted);">
+                            Loading history...
+                        </div>
+                    </div>
+
+                    <p style="color: #ff4d4d; font-size: 0.85rem; margin-top: 20px; text-align: center; background: rgba(255, 77, 77, 0.1); padding: 10px; border: 1px solid #ff4d4d; border-radius: 5px;">
+                        <strong>(!) NEVER share a key before you use it! Always remember to copy your keys.</strong>
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/keyauth.js"></script>
+    <script src="games/links/linkData.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+.lava-lamp {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-main);
+    z-index: 1;
+    overflow: hidden;
+    transition: background 0.5s ease;
+}
+
+.bubble {
+    position: absolute;
+    bottom: -100px;
+    background-color: transparent;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px var(--glow), 0 0 10px var(--glow);
+    animation: rise infinite ease-in;
+    transition: all 0.5s ease;
+}
+
+.bubble:nth-child(1) { width: 40px; height: 40px; left: 10%; animation-duration: 8s; }
+.bubble:nth-child(2) { width: 80px; height: 80px; left: 25%; animation-duration: 12s; animation-delay: 2s; }
+.bubble:nth-child(3) { width: 50px; height: 50px; left: 40%; animation-duration: 10s; animation-delay: 4s; }
+.bubble:nth-child(4) { width: 90px; height: 90px; left: 55%; animation-duration: 14s; animation-delay: 0s; }
+.bubble:nth-child(5) { width: 35px; height: 35px; left: 70%; animation-duration: 9s; animation-delay: 3s; }
+.bubble:nth-child(6) { width: 110px; height: 110px; left: 85%; animation-duration: 16s; animation-delay: 1s; }
+.bubble:nth-child(7) { width: 60px; height: 60px; left: 50%; animation-duration: 11s; animation-delay: 5s; }
+
+@keyframes rise {
+    0% { bottom: -120px; transform: translateX(0); }
+    50% { transform: translateX(30px); }
+    100% { bottom: 110vh; transform: translateX(-30px); }
+}
+
+/* =========================================
+   THEME DEFINITIONS
+   ========================================= */
+
+/* GRAPE - Updated to Purple */
+body[data-theme="grape"] {
+    --bg-main: #140026;
+    --bg-card: rgba(45, 0, 77, 0.85);
+    --bg-card-solid: #2d004d;
+    --accent: #b026ff;
+    --text-main: #ffffff;
+    --glow: rgba(176, 38, 255, 0.3);
+    --glow-strong: #b026ff;
+    --shadow-size: 5px;
+}
+
+/* LIGHT MODE */
+body[data-theme="light"] {
+    --bg-main: #f0f0f0;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --bg-card-solid: #ffffff;
+    --accent: #333333;
+    --text-main: #1a1a1a;
+    --text-muted: #555555;
+    --glow: rgba(0, 0, 0, 0.1);
+    --glow-strong: #888888;
+    --shadow-size: 2px;
+}
+
+/* MAROON - Updated to Red/Crimson */
+body[data-theme="maroon"] {
+    --bg-main: #2b0000;
+    --bg-card: rgba(74, 0, 0, 0.85);
+    --bg-card-solid: #4a0000;
+    --accent: #ff4d4d;
+    --text-main: #ffffff;
+    --glow: rgba(255, 77, 77, 0.3);
+    --glow-strong: #ff4d4d;
+    --shadow-size: 5px;
+}
+
+/* OLIVE */
+body[data-theme="olive"] {
+    --bg-main: #0a110a;
+    --bg-card: rgba(46, 59, 31, 0.85);
+    --bg-card-solid: #2e3b1f;
+    --accent: #00ff00;
+    --text-main: #ffffff;
+    --glow: rgba(144, 238, 144, 0.4);
+    --glow-strong: #90ee90;
+    --shadow-size: 5px;
+}
+
+/* =========================================
+   NEON VARIANTS (High Shadow Density)
+   ========================================= */
+body[data-theme="neon-default"] {
+    --bg-main: #050505;
+    --bg-card-solid: #111111;
+    --accent: #00ffff;
+    --glow: rgba(0, 255, 255, 0.6);
+    --glow-strong: #00ffff;
+    --shadow-size: 8px;
+}
+
+body[data-theme="neon-grape"] {
+    --bg-main: #0a0014;
+    --bg-card-solid: #1a0033;
+    --accent: #ff00ff;
+    --glow: rgba(255, 0, 255, 0.7);
+    --glow-strong: #ff00ff;
+    --shadow-size: 8px;
+}
+
+body[data-theme="neon-maroon"] {
+    --bg-main: #1a0000;
+    --bg-card-solid: #330000;
+    --accent: #ff3333;
+    --glow: rgba(255, 51, 51, 0.7);
+    --glow-strong: #ff3333;
+    --shadow-size: 8px;
+}
+
+body[data-theme="neon-olive"] {
+    --bg-main: #001a00;
+    --bg-card-solid: #003300;
+    --accent: #33ff33;
+    --glow: rgba(51, 255, 51, 0.7);
+    --glow-strong: #33ff33;
+    --shadow-size: 8px;
+}
